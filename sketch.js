@@ -1,13 +1,65 @@
+/*// string
+var string1 = "this is a string";
+//console.log(string1);
+
+// number
+var num = 100;
+//console.log(num);
+
+// boolean    true or false
+var boolname = true;
+//console.log(boolname);
+
+// undefined
+var object
+////console.log(object);
+
+// null
+
+object = null;
+//console.log(object);
+
+// example of array
+
+//arraxy of same data type
+
+var arr1 = [1,2,3,4,5];
+//console.log(arr1);
+
+// an array holding different data type
+var arr2 = ["name",12,true]
+//console.log(arr2);
+
+//an array can store a list of arrays
+
+var arr3 = [[1,2], [2,3],[3,4]];
+//console.log(arr3);
+arr3.push("arjun")
+arr3.pop()/*?*
+
+console.log(arr3);
+
+// first array ()
+console.log(arr3[0])
+
+//first element of 1st array
+console.log(arr3[0],[1]);
+
+*/
+
+
 const Engine = Matter.Engine;
 const World= Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
+const Render = Matter.Render;
 
 var engine, world;
 var box1, pig1,pig3;
 var backgroundImg,platform;
 var bird, slingshot;
 
+var gameState = "onSling";
 
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
@@ -41,6 +93,21 @@ function setup(){
 
     //log6 = new Log(230,180,80, PI/2);
     slingshot = new SlingShot(bird.body,{x:200, y:50});
+
+    // render code starts here
+    var render = Render.create({
+        element:document.body,
+        engine: engine,
+        options: {
+          width: 1200,
+          height: 400,
+          wireframes:false,
+          showAngleIndicator: true,
+        },
+        });
+
+      Render.run(render);
+      //render code ends here
 }
 
 function draw(){
@@ -69,16 +136,21 @@ function draw(){
 }
 
 function mouseDragged(){
-    Matter.Body.setPosition(bird.body, {x: mouseX , y: mouseY});
+
+    if (gameState!=="launched") {
+         Matter.Body.setPosition(bird.body, {x: mouseX , y: mouseY});
+    }
+   
 }
 
 
 function mouseReleased(){
     slingshot.fly();
+    gameState="launched"
 }
 
 function keyPressed(){
     if(keyCode === 32){
-        slingshot.attach(bird.body);
+        //slingshot.attach(bird.body);
     }
 }
